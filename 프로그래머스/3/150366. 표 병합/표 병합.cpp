@@ -22,20 +22,22 @@ void merge(int a, int b) {
     
     if (a != b) {
         string val1 = cell[a], val2 = cell[b];
-        if (val1 == "EMPTY" && val2 != "EMPTY") parent[a] = b;
-        else parent[b] = a;
+        if (val1 == "EMPTY") cell[a] = cell[b];
+        parent[b] = a;
     }
 }
 
 void unmerge(int a) {
     int p = find(a);
     string val = cell[p];
+    vector<int> tmp;
     
     for (int i = 1; i <= 2500; i++) {
-        if (find(i) == p) {
-            parent[i] = i;
-            cell[i] = "EMPTY";
-        }
+        if (find(i) == p) tmp.push_back(i);
+    }
+    for (int x : tmp) {
+        parent[x] = x;
+        cell[x] = "EMPTY";
     }
     
     cell[a] = val;
@@ -57,44 +59,24 @@ vector<string> solution(vector<string> commands) {
         
         if (v[0] == "UPDATE") {
             if (v.size() == 4) {
-                int a = position(stoi(v[1]), stoi(v[2]));
-                //int p = find(a);
-                int p = parent[a];
+                int pos = position(stoi(v[1]), stoi(v[2]));
+                int p = find(pos);
                 cell[p] = v[3];
             }
             else {
                 for (int i = 1; i <= 2500; i++) {
-                    //int p = find(i);
-                    if (cell[i] == v[1]) cell[i] = v[2];
+                    int p = find(i);
+                    if (cell[p] == v[1]) cell[p] = v[2];
                 }
             }
         }
         else if (v[0] == "MERGE") {
             int a = position(stoi(v[1]), stoi(v[2])), b = position(stoi(v[3]), stoi(v[4]));
-            //merge(a, b);
-            a = parent[a];
-            b = parent[b];
-            if (a != b) {
-                for (int i = 1; i <= 2500; i++) {
-                    if (parent[i] == b) parent[i] = a;
-                }
-                string v1 = cell[a], v2 = cell[b];
-                if (v1 == "EMPTY" && v2 != "EMPTY") cell[a] = cell[b];
-                else cell[b] = cell[a];
-            }
+            merge(a, b);
         }
         else if (v[0] == "UNMERGE") {
             int a = position(stoi(v[1]), stoi(v[2]));
-            //unmerge(a);
-            int p = parent[a];
-            string val = cell[p];
-            for (int i = 1; i <= 2500; i++) {
-                if (parent[i] == p) {
-                    parent[i] = i;
-                    cell[i] = "EMPTY";
-                }
-            }
-            cell[a] = val;
+            unmerge(a);
         }
         else {
             int a = position(stoi(v[1]), stoi(v[2]));
