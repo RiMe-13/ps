@@ -5,7 +5,6 @@ using namespace std;
 
 int n, max_val;
 int board[21][21];
-//int copy_board[21][21];
 
 void shift(int x) {
     queue<int> q;
