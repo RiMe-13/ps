@@ -7,7 +7,6 @@ typedef pair<int, int> pii;
 
 int n, e, v1, v2;
 const int INF = 1e9;
-//int dist[801];
 vector<pii> adj[801];
 priority_queue<pii> pq;
 
