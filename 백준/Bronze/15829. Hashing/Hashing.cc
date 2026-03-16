@@ -17,7 +17,7 @@ int main() {
         res += ((long long) (c - 96) * r) % m;
         r = (r * 31) % m;
     }
-    cout << res << "\n";
+    cout << res % m << "\n";
 
     return 0;
 }
